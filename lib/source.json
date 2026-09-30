@@ -1,0 +1,79 @@
+{
+  "version": "v2.5_REPORT_SCORE",
+  "primaryAxisWeight": 1,
+  "secondaryAxisWeight": 0.2,
+  "maxAnswer": 3,
+  "axes": [
+    "공동체축",
+    "사람축",
+    "진리축",
+    "사명축"
+  ],
+  "characters": [
+    "여호수아형",
+    "느헤미야형",
+    "아브라함형",
+    "바나바형",
+    "다윗형",
+    "에스라형",
+    "엘리야형",
+    "요셉형",
+    "베드로형"
+  ],
+  "relations": {
+    "베드로형": {
+      "synergy": "요셉형",
+      "caution": "느헤미야형",
+      "synergyReason": "도전과 구조가 만나 실행력이 체계화됨",
+      "cautionReason": "속도와 안정성의 차이로 긴장 가능"
+    },
+    "요셉형": {
+      "synergy": "베드로형",
+      "caution": "바나바형",
+      "synergyReason": "전략과 선도성이 만나 비전 실행력이 커짐",
+      "cautionReason": "성과/구조와 관계/배려 우선순위 차이 가능"
+    },
+    "엘리야형": {
+      "synergy": "에스라형",
+      "caution": "바나바형",
+      "synergyReason": "진리 선포와 말씀 교육이 만나 기준이 깊어짐",
+      "cautionReason": "직면과 격려의 방식 차이 가능"
+    },
+    "에스라형": {
+      "synergy": "엘리야형",
+      "caution": "베드로형",
+      "synergyReason": "말씀 연구와 진리 선포가 만나 방향성이 선명해짐",
+      "cautionReason": "신중한 검토와 빠른 실행 사이 긴장 가능"
+    },
+    "다윗형": {
+      "synergy": "바나바형",
+      "caution": "느헤미야형",
+      "synergyReason": "예배적 민감성과 격려가 만나 사람을 깊이 세움",
+      "cautionReason": "정서/분위기와 구조/일정의 우선순위 차이 가능"
+    },
+    "바나바형": {
+      "synergy": "에스라형",
+      "caution": "엘리야형",
+      "synergyReason": "사람 세움과 말씀 교육이 만나 따뜻한 양육이 깊어짐",
+      "cautionReason": "격려와 직면의 방식 차이 가능"
+    },
+    "여호수아형": {
+      "synergy": "느헤미야형",
+      "caution": "베드로형",
+      "synergyReason": "책임감과 재건 능력이 만나 공동체 안정성이 커짐",
+      "cautionReason": "완수 중심과 도전 중심의 속도 차이 가능"
+    },
+    "느헤미야형": {
+      "synergy": "바나바형",
+      "caution": "베드로형",
+      "synergyReason": "구조 재건과 사람 세움이 만나 건강한 공동체가 됨",
+      "cautionReason": "안정적 재건과 빠른 도전 사이 긴장 가능"
+    },
+    "아브라함형": {
+      "synergy": "여호수아형",
+      "caution": "엘리야형",
+      "synergyReason": "포용과 책임감이 만나 공동체를 안정적으로 품음",
+      "cautionReason": "포용과 기준 제시의 방식 차이 가능"
+    }
+  }
+}
