@@ -56,4 +56,4 @@ Vercel ydg4/cclp_retry2 Production에 Supabase URL, publishable key, 서버용 s
 최신 코드를 Vercel CLI로 직접 배포 완료: dpl_53dHi669siMXbc4mYFtjeDSzDRLG. 실제 /admin에서 shwncks15@gmail.com Google 로그인 및 저장된 검사 0건 조회 확인.
 2026-10-03: 실제 배포 API에 가상 180개 응답을 제출해 중앙 저장 성공 확인. '연결확인용 테스트 (실제 응답 아님)' 1건이 관리자 목록에 표시되며 3영역 상세 해설 조회 확인. CSV 다운로드: 데이터 1행, 205열, Q1–Q180 포함, 이름 열 없음. 테스트 UUID는 b7f3fec3-cfe8-4030-8b30-57ba3b6b7640이며 실제 표본 분석에서 제외해야 합니다.
 Resend 계정·발신 도메인·메일 환경변수가 없어 실제 메일 전송은 아직 비활성화입니다.
-이 배포는 로컬 소스를 직접 업로드한 것입니다. GitHub main에는 최신 소스 동기화가 아직 필요하며, 기존 main을 다시 배포하면 이전 코드로 돌아갈 수 있습니다.
+이 배포는 로컬 소스를 직접 업로드한 것입니다. 이후 GitHub main에 최신 소스와 이미지를 2d855ff 커밋으로 동기화했습니다. 연결된 Vercel 프로젝트는 main 변경에 따라 자동 재배포됩니다.
