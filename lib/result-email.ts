@@ -1,5 +1,5 @@
 import type {Result} from './engine';
-export const resultRecipient='knowjuchan@sarang.org';
+export const resultRecipient='1988since@naver.com';
 export function emailConfigured(){return Boolean(process.env.RESEND_API_KEY&&process.env.RESULT_EMAIL_FROM&&process.env.APP_URL)}
 export function resultEmail(id:string,name:string,date:string,result:Result){
  const url=new URL(`/admin/results/${id}`,process.env.APP_URL!);
