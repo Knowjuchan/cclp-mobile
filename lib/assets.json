@@ -1,0 +1,14 @@
+{
+  "logo": "/images/ministry-logo.png",
+  "characters": {
+    "여호수아형": "/images/joshua-cutout.png",
+    "느헤미야형": "/images/nehemiah-cutout.png",
+    "아브라함형": "/images/abraham-cutout.png",
+    "바나바형": "/images/barnabas-cutout.png",
+    "다윗형": "/images/david-cutout.png",
+    "에스라형": "/images/ezra-cutout.png",
+    "엘리야형": "/images/elijah-cutout.png",
+    "요셉형": "/images/joseph-cutout.png",
+    "베드로형": "/images/peter-cutout.png"
+  }
+}

@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');const path=require('node:path');const ts=require('typescript');const Module=require('node:module');
+const filename=path.resolve(__dirname,'../lib/admin.ts');
+const instance=new Module(filename,module);instance.filename=filename;instance.paths=module.paths;instance._compile(ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,filename);
+const {isAdmin}=instance.exports;
+const valid={email:'shwncks15@gmail.com',email_confirmed_at:'2026-10-03',identities:[{provider:'google',identity_data:{email:'shwncks15@gmail.com'}}]};
+assert.equal(isAdmin(valid),true);assert.equal(isAdmin(null),false);
+assert.equal(isAdmin({...valid,email:'other@gmail.com'}),false);
+assert.equal(isAdmin({...valid,email_confirmed_at:null}),false);
+assert.equal(isAdmin({...valid,identities:[{provider:'email',identity_data:{email:valid.email}}]}),false);
+assert.equal(isAdmin({...valid,identities:[{provider:'google',identity_data:{email:'other@gmail.com'}}]}),false);
+assert.equal(isAdmin({...valid,identities:[]}),false);
+console.log('Admin account, confirmed identity, Google provider and mismatched identity checks passed.');
