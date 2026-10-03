@@ -4,7 +4,7 @@ const Module=require('node:module');
 const filename=path.resolve(__dirname,'../lib/engine.ts');
 const compiled=ts.transpileModule(fs.readFileSync(filename,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,esModuleInterop:true,target:ts.ScriptTarget.ES2022}}).outputText;
 const instance=new Module(filename,module);instance.filename=filename;instance.paths=module.paths;instance._compile(compiled,filename);
-const {calculate,displayScore}=instance.exports;
+const {calculate,displayScore,enneagramLabel}=instance.exports;
 const fixtures=JSON.parse(fs.readFileSync(process.argv[2]||path.resolve(__dirname,'engine-fixtures.json'),'utf8'));
 for(const fixture of fixtures){const result=calculate(fixture.answers);for(const kind of ['axes','characters'])for(const item of result[kind]){const expected=fixture.expected[kind][item.name];assert.ok(Math.abs(item.raw-expected.raw)<1e-9);assert.ok(Math.abs(item.internal-expected.internal)<1e-9);assert.equal(item.score,expected.score);}}
 for(const v of [NaN,Infinity,-1,4,1.5,undefined])assert.throws(()=>calculate(Array(180).fill(v)));
@@ -16,3 +16,8 @@ const interp=fs.readFileSync(path.resolve(__dirname,'../lib/interpretation.ts'),
 const psychological=interp.split('export const axisCopy')[0];
 assert.ok(!/하나님|사명|소명|말씀|기도|교회|성경/.test(psychological));
 console.log(`${fixtures.length} source-formula fixtures passed; invalid answers, ties, score boundaries and language separation passed.`);
+
+const questions=require("../lib/questions.json");
+const responses=questions.map(q=>q.enneagram===5?3:q.enneagram===4?2:0);
+const measured=calculate(responses);assert.equal(measured.enneagram[0].raw,60);assert.equal(measured.enneagram[0].score,60);assert.equal(measured.enneagram.find(x=>x.name==="4유형").score,40);assert.equal(enneagramLabel(measured),"5w4");
+const wingTie=calculate(questions.map(q=>q.enneagram===5?3:[4,6].includes(q.enneagram)?2:0));assert.equal(enneagramLabel(wingTie),"5w4 / 5w6");console.log("Raw scores and wing notation including ties passed.");

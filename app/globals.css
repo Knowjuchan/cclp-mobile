@@ -26,3 +26,5 @@
 .entry .storageNotice,.entry .startNotice{font-size:11px;line-height:1.7;color:#737c75}.entry .startNotice{margin:4px 0 0}
 
 .footerLegal{max-width:540px;font-size:10px;line-height:1.7;color:#7c857f;margin-top:8px}.footerLegal p{margin:0}.footerLegal p+p{margin-top:5px}
+
+.homeLookup{margin-top:24px}.homeLookup h2{font-size:19px}.homeLookup p{font-size:12px}.homeLookup .entry{gap:10px}.autoNextHint{font-size:12px;color:var(--muted)}@media print{.printButton,.adminBack{display:none!important}}
