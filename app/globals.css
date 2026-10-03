@@ -24,3 +24,5 @@
 .collectionNotice{font-size:11px;line-height:1.8;color:#737c75;max-width:540px;margin:4px 0 0;text-align:left}
 
 .entry .storageNotice,.entry .startNotice{font-size:11px;line-height:1.7;color:#737c75}.entry .startNotice{margin:4px 0 0}
+
+.footerLegal{max-width:540px;font-size:10px;line-height:1.7;color:#7c857f;margin-top:8px}.footerLegal p{margin:0}.footerLegal p+p{margin-top:5px}
