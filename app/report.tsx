@@ -6,11 +6,11 @@ import {Result,Score,enneagramLabel} from '../lib/engine';
 import {types,characters,axisCopy} from '../lib/interpretation';
 function Scores({items,max=100,raw=false}:{items:Score[];max?:number;raw?:boolean}){return <div>{items.map(x=><div className="score" key={x.name}><span>{x.name}</span><div><i style={{width:`${x.score/max*100}%`}}/></div><b>{raw?x.raw:x.score.toFixed(2)}</b></div>)}</div>}
 function Copy({title,children}:{title:string;children:React.ReactNode}){return <article className="copy"><h3>{title}</h3><p>{children}</p></article>}
-export default function Report({result:r,name,gender,birthday,assessmentDate}:{result:Result;name:string;gender?:string|null;birthday?:string|null;assessmentDate?:string|null}){
+export default function Report({result:r,name,gender,birthday,assessmentDate,displayAge}:{result:Result;name:string;gender?:string|null;birthday?:string|null;assessmentDate?:string|null;displayAge?:number|null}){
  const type=types[r.topType];const top=characters[r.topCharacters[0]];
  const uncertain=r.flat||r.tiedTypes.length>1||r.tiedCharacters.length>1;
  return <>
- <section className="resultHero"><span className="pill">사랑의교회 대학부</span><h1>{participantLabel(name,gender,birthday,assessmentDate)}님의<br/>공동체 리더십 프로파일</h1><p>애니어그램 · CCLP 4축 · CCLP 성경유형</p></section>
+ <section className="resultHero"><span className="pill">사랑의교회 대학부</span><h1>{participantLabel(name,gender,birthday,assessmentDate,displayAge)}님의<br/>공동체 리더십 프로파일</h1><p>애니어그램 · CCLP 4축 · CCLP 성경유형</p></section>
  <nav className="chapterNav" aria-label="결과 영역"><a href="#profile">01 · 애니어그램</a><a href="#ministry">02 · CCLP 4축</a><a href="#community">03 · CCLP 성경유형</a></nav>
  {uncertain&&<aside className="notice">{r.flat?'모든 응답이 같아 개인의 차이를 충분히 구분하기 어렵습니다. ':''}{r.tiedTypes.length>1?`핵심유형 동점: ${r.tiedTypes.join(' · ')}. `:''}{r.tiedCharacters.length>1?`성경인물 최고점 동점: ${r.tiedCharacters.join(' · ')}. `:''}동점은 같은 순위로 표시합니다. 아래 개별 유형 설명은 비교를 위한 참고이며 한 유형으로 확정하지 않습니다.</aside>}
  <section className="card reportSection" id="profile"><span className="sectionLabel">01 · 애니어그램</span><h2>{enneagramLabel(r)} · {uncertain?'상위 성향 살펴보기':type.title}</h2><Scores items={r.enneagram} max={60} raw/><p className="caption">유형별 점수 · 60점 만점</p>
@@ -23,7 +23,7 @@ export default function Report({result:r,name,gender,birthday,assessmentDate}:{r
  {r.evidence.length>0&&<article className="copy"><h3>응답에서 드러난 나의 강점</h3>{r.evidence.map(x=><blockquote key={x}>{x}</blockquote>)}</article>}
  <Copy title="개인화된 권면">{top.counsel} {r.topCharacters.join(' · ')}의 조합을 살펴보면 한 가지 역할보다 여러 자원을 함께 쓰는 길을 생각할 수 있습니다. 상대적으로 높은 {r.topAxis}의 자원을 활용하고, {r.lowAxis}은 부족함을 단정하기보다 도움과 연습을 더할 영역으로 살펴보세요. {axisCopy[r.lowAxis].practice}</Copy> <article className="copy"><h3>시너지 유형 · {r.synergy}</h3><blockquote>{r.synergyReason}</blockquote><p>서로의 역할과 기대를 합의하고 작은 일을 함께 해 보며 이 조합이 실제 관계에서 어떻게 도움이 되는지 확인해 보세요.</p></article>
  <article className="copy"><h3>주의 유형 · {r.caution}</h3><blockquote>{r.cautionReason}</blockquote><p>왜 충돌할 수 있는가: 중요하게 여기는 기준과 진행 방식이 다를 수 있기 때문입니다. 이는 상대의 문제를 뜻하지 않습니다. 시작 전에 속도, 결정 방법, 도움을 원하는 방식을 함께 이야기해 보세요.</p></article>
- <Copy title="공동체 안에서 살필 점">{top.caution} 도움을 요청하고 다른 유형의 강점을 듣는 시간을 마련해 보세요.</Copy><Copy title="추천말씀과 묵상 방향">{top.verse} · {top.verseTheme}. 본문 전체의 맥락을 읽고 현재의 상황과 연결해 묵상해 보세요.</Copy><Copy title="성장 키워드">{r.topAxis} 활용 · {r.lowAxis} 연습 · 위임 · 포용</Copy><Copy title="마지막 격려">{participantLabel(name,gender,birthday,assessmentDate)}님의 자원은 공동체 안에서 다른 사람의 강점과 만날 때 더 넓게 쓰일 수 있습니다. 이번 주에는 {axisCopy[r.lowAxis].practice} 점수의 크기보다 함께 성장하는 작은 실천을 소중히 여겨 주세요.</Copy></section>
+ <Copy title="공동체 안에서 살필 점">{top.caution} 도움을 요청하고 다른 유형의 강점을 듣는 시간을 마련해 보세요.</Copy><Copy title="추천말씀과 묵상 방향">{top.verse} · {top.verseTheme}. 본문 전체의 맥락을 읽고 현재의 상황과 연결해 묵상해 보세요.</Copy><Copy title="성장 키워드">{r.topAxis} 활용 · {r.lowAxis} 연습 · 위임 · 포용</Copy><Copy title="마지막 격려">{participantLabel(name,gender,birthday,assessmentDate,displayAge)}님의 자원은 공동체 안에서 다른 사람의 강점과 만날 때 더 넓게 쓰일 수 있습니다. 이번 주에는 {axisCopy[r.lowAxis].practice} 점수의 크기보다 함께 성장하는 작은 실천을 소중히 여겨 주세요.</Copy></section>
 
  <p className="caption">이 결과를 자신의 경험과 함께 읽으며, 자기이해와 성장 대화의 출발점으로 활용해 주세요.</p>
  </>
