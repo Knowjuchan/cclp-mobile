@@ -1,0 +1,12 @@
+type Row={birthday:string|null;created_at:string};
+const colors=['#224b3c','#6c8b66','#b1b987','#cfb785','#83a0a6','#a291ad'];
+export default function AdminOverview({rows}:{rows:Row[]}){
+ const years:Record<string,number>={},births:Record<string,number>={};
+ const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
+ let month=0;
+ for(const row of rows){const date=new Date(row.created_at).toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});const year=date.slice(0,4);years[year]=(years[year]||0)+1;if(date.slice(0,7)===today.slice(0,7))month++;const birth=row.birthday?.slice(0,4)||'정보 없음';births[birth]=(births[birth]||0)+1;}
+ const annual=Object.entries(years).sort((a,b)=>b[0].localeCompare(a[0]));const birthYears=Object.entries(births).sort((a,b)=>a[0].localeCompare(b[0]));let cursor=0;
+ const stops=annual.map(([year,count],i)=>{const start=cursor;cursor+=count/rows.length*100;return `${colors[i%colors.length]} ${start}% ${cursor}%`;});
+ const max=Math.max(1,...Object.values(births));
+ return <section className="card adminOverview"><span className="sectionLabel">AT A GLANCE</span><h2>검사 데이터 한눈에 보기</h2><div className="overviewStats"><div><span>전체 검사</span><strong>{rows.length}<small>건</small></strong></div><div><span>이번 달</span><strong>{month}<small>건</small></strong></div><div><span>출생정보 등록</span><strong>{rows.filter(x=>x.birthday).length}<small>건</small></strong></div></div><div className="overviewChart"><div className="yearDonut" role="img" aria-label={`검사 연도별 분포: ${annual.map(([y,n])=>`${y}년 ${n}건`).join(', ')||'검사 없음'}`} style={{background:rows.length?`conic-gradient(${stops.join(',')})`:'#e5e9e3'}}><div><strong>{rows.length}</strong><span>누적 검사</span></div></div><div><h3>검사 연도별 분포</h3>{annual.length?annual.map(([year,count],i)=><p className="yearLegend" key={year}><i style={{background:colors[i%colors.length]}}/><span>{year}년</span><b>{count}건</b><small>{Math.round(count/rows.length*100)}%</small></p>):<p>검사가 등록되면 통계가 표시됩니다.</p>}</div></div><h3>내담자 출생연도별 분포</h3><div className="birthYearBars">{birthYears.map(([year,count])=><div key={year}><span>{year==='정보 없음'?year:`${year}년생`}</span><div><i style={{width:`${count/max*100}%`}}/></div><b>{count}건</b></div>)}</div><p className="caption">전체 저장 기록 기준 · 동일인의 재검사와 테스트 기록도 포함됩니다. 기존에 생일을 저장하지 않은 기록은 ‘정보 없음’으로 표시됩니다.</p></section>;
+}

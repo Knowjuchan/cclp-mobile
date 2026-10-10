@@ -14,10 +14,13 @@ export async function POST(request:NextRequest){
   const text=await request.text();if(text.length>12000)return NextResponse.json({error:'요청이 너무 큽니다.'},{status:413});
   const data=JSON.parse(text);
   if(data.noticeVersion!=='collection-notice-v1'||typeof data.name!=='string'||!data.name.trim()||data.name.trim().length>40||typeof data.code!=='string'||!/^CCLP-[A-F0-9]{32}$/.test(data.code)||!Array.isArray(data.answers))return NextResponse.json({error:'저장 안내 버전과 응답을 확인해 주세요.'},{status:400});
+  const birthday=data.birthday??null,phoneLast4=data.phoneLast4??null;
+  if(birthday!==null&&(typeof birthday!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(birthday)||!Number.isFinite(Date.parse(birthday))||new Date(birthday).toISOString().slice(0,10)!==birthday||birthday>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'})||birthday<'1900-01-01'))return NextResponse.json({error:'생일 형식을 확인해 주세요.'},{status:400});
+  if(phoneLast4!==null&&(typeof phoneLast4!=='string'||!/^\d{4}$/.test(phoneLast4)))return NextResponse.json({error:'휴대번호 뒷자리 4개를 확인해 주세요.'},{status:400});
   const result=calculate(data.answers);
   const client=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
   const codeHash=createHash('sha256').update(data.code).digest('hex');
-  const {data:inserted,error}=await client.from('assessment_results').insert({code_hash:codeHash,name:data.name.trim(),answers:data.answers,engine_version:'v2.5_REPORT_SCORE',report:result,consent_version:'collection-notice-v1'}).select('id,created_at,email_status').single();
+  const {data:inserted,error}=await client.from('assessment_results').insert({code_hash:codeHash,name:data.name.trim(),birthday,phone_last4:phoneLast4,answers:data.answers,engine_version:'v2.5_REPORT_SCORE',report:result,consent_version:'collection-notice-v1'}).select('id,created_at,email_status').single();
   if(error&&error.code!=='23505')return NextResponse.json({error:'중앙 저장에 실패했습니다. 다시 시도해 주세요.'},{status:502});
   let record=inserted;
   if(!record){const existing=await client.from('assessment_results').select('id,created_at,email_status,name,answers').eq('code_hash',codeHash).single();if(existing.error||!existing.data||existing.data.name!==data.name.trim()||JSON.stringify(existing.data.answers)!==JSON.stringify(data.answers))return NextResponse.json({error:'저장 기록을 확인하지 못했습니다.'},{status:409});record=existing.data;}
