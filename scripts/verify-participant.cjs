@@ -1,0 +1,13 @@
+const ts=require('typescript'),fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
+const code=ts.transpileModule(fs.readFileSync('lib/participant.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
+const context={exports:{}};vm.runInNewContext(code,context);const {ageAtAssessment,participantLabel}=context.exports;
+assert.equal(ageAtAssessment('1988-03-15','2026-03-14T12:00:00Z'),37);
+assert.equal(ageAtAssessment('1988-03-15','2026-03-14T15:00:00Z'),38);
+assert.equal(participantLabel('노주찬','남자','1988-03-15','2026-10-10T00:00:00Z'),'노주찬(남자 만38세)');
+assert.equal(ageAtAssessment('2000-02-29','2026-02-28T00:00:00Z'),25);
+assert.equal(ageAtAssessment('2000-02-29','2026-03-01T00:00:00Z'),26);
+assert.equal(ageAtAssessment('2000-02-30','2026-10-10'),null);
+assert.equal(ageAtAssessment('2027-01-01','2026-10-10'),null);
+assert.equal(participantLabel('기존 기록',null,null,'2026-10-10'),'기존 기록');
+assert.equal(participantLabel('생일만','', '1988-03-15','2026-10-10'),'생일만(만38세)');
+console.log('Participant age, Korean birthday boundary, leap dates and missing metadata passed.');
