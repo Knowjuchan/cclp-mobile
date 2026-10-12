@@ -3,6 +3,7 @@ import {createClient} from '@supabase/supabase-js';
 import {NextRequest,NextResponse} from 'next/server';
 import {sendResultEmail} from '../../../lib/result-email';
 import {calculate} from '../../../lib/engine';
+import {validParticipantIdentity} from '../../../lib/participant-identity';
 export const dynamic='force-dynamic';
 export async function GET(){return NextResponse.json({enabled:Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL&&process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY&&process.env.SUPABASE_SERVICE_ROLE_KEY)},{headers:{'Cache-Control':'no-store'}})}
 export async function POST(request:NextRequest){
@@ -14,7 +15,8 @@ export async function POST(request:NextRequest){
   const text=await request.text();if(text.length>12000)return NextResponse.json({error:'요청이 너무 큽니다.'},{status:413});
   const data=JSON.parse(text);
   if(data.noticeVersion!=='collection-notice-v1'||typeof data.name!=='string'||!data.name.trim()||data.name.trim().length>40||typeof data.code!=='string'||!/^CCLP-[A-F0-9]{32}$/.test(data.code)||!Array.isArray(data.answers))return NextResponse.json({error:'저장 안내 버전과 응답을 확인해 주세요.'},{status:400});
-  const birthday=data.birthday??null,phoneLast4=data.phoneLast4??null,gender=data.gender??null;
+  if(!validParticipantIdentity({name:data.name,gender:data.gender,birthday:data.birthday,phoneLast4:data.phoneLast4}))return NextResponse.json({error:'이름, 성별, 생년월일, 연락처 뒷번호 4개를 모두 확인해 주세요.'},{status:400});
+  const birthday=data.birthday,phoneLast4=data.phoneLast4,gender=data.gender;
   if(gender!==null&&gender!=="남자"&&gender!=="여자")return NextResponse.json({error:"성별을 확인해 주세요."},{status:400});
   if(birthday!==null&&(typeof birthday!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(birthday)||!Number.isFinite(Date.parse(birthday))||new Date(birthday).toISOString().slice(0,10)!==birthday||birthday>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'})||birthday<'1900-01-01'))return NextResponse.json({error:'생일 형식을 확인해 주세요.'},{status:400});
   if(phoneLast4!==null&&(typeof phoneLast4!=='string'||!/^\d{4}$/.test(phoneLast4)))return NextResponse.json({error:'휴대번호 뒷자리 4개를 확인해 주세요.'},{status:400});

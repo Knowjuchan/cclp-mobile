@@ -1,0 +1,3 @@
+export default function ParticipantFields({defaultName=''}:{defaultName?:string}){
+ return <div className="participantFields"><label>이름<input name="name" required maxLength={40} autoComplete="name" defaultValue={defaultName} placeholder="이름"/></label><label>성별<select name="gender" required defaultValue=""><option value="" disabled>선택해 주세요</option><option>남자</option><option>여자</option></select></label><label>생년월일<input name="birthday" required type="date" min="1900-01-01" max={new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'})}/></label><label>연락처 (뒷번호 4개)<input name="phoneLast4" required type="text" inputMode="numeric" pattern="[0-9]{4}" minLength={4} maxLength={4} autoComplete="off" placeholder="예: 1234"/></label></div>;
+}
