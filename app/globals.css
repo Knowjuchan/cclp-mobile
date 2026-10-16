@@ -43,3 +43,5 @@
 .developerIdentity .developerBio{margin-top:7px}.developerIdentity .developerBio p{font-size:11px;line-height:1.8;color:#949b96;margin:2px 0;font-weight:400}.selfViewStatus{display:inline-block;font-size:12px!important;line-height:1.7;padding:6px 11px;border-radius:8px;margin:12px 0 0}.selfViewStatus.viewed{color:#3b624a;background:#edf4e9}.selfViewStatus.unviewed{color:#7c867c;background:#f0f2ed}
 
 .developerGreeting .developmentNote{font-size:11px;line-height:1.8;color:#949b96;margin:26px 0 0;padding-top:18px;border-top:1px solid #edf0e9;font-weight:400}
+
+.guideContents>a[aria-current="page"]{background:#e7eedf;border-color:#869775;box-shadow:inset 3px 0 #65815e}.guideReturn{display:block;text-align:center;padding:16px;margin:8px 0 24px;color:#526c4d;font-size:13px;text-underline-offset:4px}@media print{.guideReturn{display:none}}

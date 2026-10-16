@@ -2,6 +2,7 @@ import characterGuide from '../../lib/character-guide.json';
 import axisGuide from '../../lib/axis-guide.json';
 import Link from 'next/link';
 import Brand from '../brand';
+import GuidePanels from './guide-panels';
 import {CharacterArt,SourceArt} from '../source-art';
 import {characters,axisCopy,types} from '../../lib/interpretation';
 export const metadata={title:'애니어그램과 CCLP 알아보기 | 사랑의교회 대학부',description:'개발자의 소개와 함께 애니어그램, CCLP 4축, 아홉 성경인물 리더십 프로파일을 알아봅니다.'};
@@ -24,7 +25,7 @@ export default function About(){return <main className="shell about modelGuide">
  <Brand/>
  <nav className="aboutNav" aria-label="페이지 이동"><Link href="/">← 검사 시작 화면</Link><a href="#guide-contents">목차 보기 ↓</a></nav>
  <header className="aboutHero"><p className="eyebrow">BEFORE WE START</p><h1>애니어그램과<br/>CCLP 알아보기</h1><p>나는 왜 이렇게 생각하고 행동할까요?<br/>나에게 주어진 강점으로 공동체를 어떻게 세울 수 있을까요?</p><p>검사에 담긴 관점과 각 영역의 의미를 차근차근 살펴보세요. 자신의 경험을 떠올리며 읽으면 결과를 더 깊이 이해할 수 있습니다.</p></header>
- <nav id="guide-contents" className="guideContents" aria-label="검사 모델 설명 목차">{chapters.map(chapter=><a href={`#${chapter.id}`} key={chapter.id}><span>{chapter.number}</span><div><b>{chapter.title}</b><small>{chapter.description}</small></div><span aria-hidden="true">↗</span></a>)}</nav>
+ <GuidePanels chapters={chapters}>
  <section id="developer" className="card handbook guideChapter developerWelcome"><ChapterLabel number="01">WELCOME</ChapterLabel><h2>개발자 소개와 인사말</h2><div className="developerIdentity"><span aria-hidden="true">CCLP</span><div><h3>노주찬 목사</h3><div className="developerBio"><p>총신대학교 / 총신대학교 신학대학원 / 총신대학교 일반대학원</p><p>전)강남교회 청년부 / 현)사랑의교회 대학부</p></div></div></div><div className="developerGreeting"><p className="greetingSalutation">샬롬!<br/>주님의 이름으로 문안드립니다.</p>
 <p>지난 9년 동안 청년사역의 현장에서 수많은 청년들과 함께 울고 웃으며, 한 가지 질문을 깊이 고민하게 되었습니다.</p>
 <blockquote className="greetingQuestion">“하나님께서는 이 청년을 어떤 사람으로 지으셨으며, 어떤 모습으로 빚어가시고, 어디로 부르고 계시는가?”</blockquote>
@@ -51,6 +52,7 @@ export default function About(){return <main className="shell about modelGuide">
  <nav className="characterIndex" aria-label="아홉 성경인물 바로가기">{characterNames.map((name,i)=><a key={name} href={`#character-${i}`}>{name}</a>)}</nav>
  <div className="characterGuideList">{characterNames.map((name,i)=>{const guide=characterGuide[name];const copy=characters[name];return <article id={`character-${i}`} className="characterGuideCard" key={name}><div className="characterGuideHeader"><div><p className="eyebrow">BIBLICAL PROFILE · {String(i+1).padStart(2,'0')}</p><h3>{name}</h3><p className="characterIdentity">{guide.identity}</p><p>{guide.summary}</p></div><CharacterArt name={name}/></div><details className="guideDisclosure"><summary><b>{name} 자세히 알아보기</b><span className="disclosurePlus" aria-hidden="true">+</span></summary><div className="disclosureBody"><dl className="guideFacts"><div><dt>핵심 강점</dt><dd>{guide.strengths.join(' · ')}</dd></div><div><dt>대표본문</dt><dd><b>{guide.passage}</b><br/>{guide.story}</dd></div><div><dt>리더십 스타일</dt><dd>{guide.style}</dd></div><div><dt>대표 사역과 열매</dt><dd>{guide.fruit.join(' · ')}</dd></div><div><dt>함께 살펴볼 애니어그램 경향</dt><dd>{guide.tendencies.map(n=>`${n}유형`).join(' · ')}<br/><small>가능한 경향을 이해하는 참고이며 고정된 대응 관계가 아닙니다.</small></dd></div><div><dt>공동체에 더하는 유익</dt><dd>{copy.benefit}</dd></div><div><dt>주의할 수 있는 패턴</dt><dd>{copy.caution}</dd></div><div><dt>성장을 위한 질문과 권면</dt><dd>{copy.counsel}</dd></div></dl></div></details></article>})}</div>
  <aside className="guideCallout"><h3>‘나는 이 인물과 같은 사람’이라는 뜻일까요?</h3><p>성경인물 프로파일은 한 사람의 삶 전체를 재현하거나 소명을 확정하는 판정이 아닙니다. 결과에서 공감되는 모습을 실제 경험과 연결하고, 강점을 어떻게 건강하게 사용할지 함께 생각하기 위한 해석 자료입니다.</p></aside></section>
+ </GuidePanels>
  <section className="card guideClosing"><span className="sectionLabel">YOUR NEXT STEP</span><h2>이제, 나의 이야기를 살펴볼 차례입니다</h2><p>180문항에 평소 모습과 가까운 정도를 0~3점으로 응답합니다. 검사 후에는 애니어그램, CCLP 4축, CCLP 성경유형을 통해 자신의 모습과 성장 방향을 함께 읽을 수 있습니다.</p><p className="caption">검사결과는 성경적인 자기이해와 영적 성장 대화를 위한 참고자료이며, 진단이나 사역배치 명령이 아닙니다.</p><Link className="primary actionLink" href="/">나의 프로파일 살펴보기 →</Link></section>
  <footer className="siteFooter"><div className="developerCredit"><span>Designed &amp; Developed by <a href="https://www.instagram.com/knowjuchan/" target="_blank" rel="noopener noreferrer">@knowjuchan</a></span><a href="mailto:knowjuchan@sarang.org">문의 : knowjuchan@sarang.org</a></div></footer>
  </main>}
