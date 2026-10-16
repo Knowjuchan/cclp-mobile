@@ -4,6 +4,7 @@ import {NextRequest,NextResponse} from 'next/server';
 import {calculate} from '../../../../lib/engine';
 import {ageAtAssessment} from '../../../../lib/participant';
 import {validParticipantIdentity} from '../../../../lib/participant-identity';
+import {createResultViewToken} from '../../../../lib/result-view-token';
 export const dynamic='force-dynamic';
 const headers={'Cache-Control':'no-store','Referrer-Policy':'no-referrer'};
 // Best-effort per-instance request budget; never retain the submitted identity in this map.
@@ -28,6 +29,6 @@ export async function POST(request:NextRequest){
   const {data,error}=await client.from('assessment_results').select('id,name,birthday,gender,answers,created_at').eq('name',identity.name.trim()).eq('gender',identity.gender).eq('birthday',identity.birthday).eq('phone_last4',identity.phoneLast4).order('created_at',{ascending:false}).limit(50);
   if(error)return NextResponse.json({error:'결과를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'},{status:502,headers});
   if(!data?.length)return NextResponse.json({error:'입력한 정보와 일치하는 저장된 결과가 없습니다. 검사할 때 입력한 정보를 확인해 주세요.'},{status:404,headers});
-  return NextResponse.json({records:data.map(row=>({id:row.id,name:row.name,gender:row.gender,age:ageAtAssessment(row.birthday,row.created_at),result:calculate(row.answers),date:row.created_at}))},{headers});
+  return NextResponse.json({records:data.map(row=>({id:row.id,viewToken:createResultViewToken(row.id,key),name:row.name,gender:row.gender,age:ageAtAssessment(row.birthday,row.created_at),result:calculate(row.answers),date:row.created_at}))},{headers});
  }catch{return NextResponse.json({error:'조회 정보를 확인해 주세요.'},{status:400,headers});}
 }
